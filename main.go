@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 )
 
 func main() {
@@ -27,5 +28,17 @@ func main() {
 			}
 			fmt.Print(ship[idx])
 		}
+	} else {
+		fmt.Println("Вы промахнулись")
+
+		for idx := range ship {
+			if target == strconv.Itoa(idx+1) {
+				ship[idx] = "."
+			}
+			fmt.Print(ship[idx])
+		}
 	}
 }
+
+// заклить, чтобы спрашивал постоянно
+// сохранить результат
