@@ -21,10 +21,22 @@ func main() {
 		fmt.Println("\nВведите координату: ")
 		fmt.Scan(&target)
 
-		if val, ok := mapBattle[target]; ok {
-			fmt.Println("Вы попали")
+		_, err := strconv.Atoi(target)
 
+		if err != nil {
+			fmt.Println("Введите числовое значение!")
+			continue
+		}
+
+		if val, ok := mapBattle[target]; ok {
 			count += 1
+
+			if count == 4 {
+				fmt.Println("\nВы выиграли!")
+			} else {
+				fmt.Println("Вы попали")
+			}
+
 			for idx := range ship {
 				if val == idx+1 {
 					ship[idx] = "X"
@@ -43,8 +55,9 @@ func main() {
 		}
 
 		if count == 4 {
-			fmt.Println("Вы выиграли!")
 			break
 		}
 	}
 }
+
+// Генерация рандомных чисел в мапу + проверка
