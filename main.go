@@ -2,20 +2,33 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"strconv"
+	"time"
 )
 
 func main() {
+	var mapBattle map[string]int // тестовое значение мапы
 	var target string
 
 	count := 0
 	ship := []string{"@", "@", "@", "@", "@", "@", "@", "@", "@", "@"}
-	mapBattle := map[string]int{
-		"5": 5,
-		"6": 6,
-		"7": 7,
-		"8": 8,
+
+	generator := rand.New(rand.NewSource(time.Now().UnixNano()))
+	countGenerator := 4
+	for i := 0; i < countGenerator; i++ {
+		numberGenerator := generator.Intn(10) + 1
+
+		strKey := strconv.Itoa(numberGenerator)
+		mapBattle[strKey] = numberGenerator
 	}
+
+	// mapBattle := map[string]int{
+	// 	"5": 5,
+	// 	"6": 6,
+	// 	"7": 7,
+	// 	"8": 8,
+	// }
 
 	for {
 		fmt.Println("\nВведите координату: ")
