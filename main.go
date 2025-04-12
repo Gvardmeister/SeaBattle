@@ -8,27 +8,31 @@ import (
 )
 
 func main() {
-	var mapBattle map[string]int // тестовое значение мапы
 	var target string
+	mapBattle := make(map[string]int)
 
 	count := 0
+	countMap := 0
 	ship := []string{"@", "@", "@", "@", "@", "@", "@", "@", "@", "@"}
 
 	generator := rand.New(rand.NewSource(time.Now().UnixNano()))
-	countGenerator := 4
-	for i := 0; i < countGenerator; i++ {
+
+	for {
 		numberGenerator := generator.Intn(10) + 1
-
 		strKey := strconv.Itoa(numberGenerator)
-		mapBattle[strKey] = numberGenerator
-	}
 
-	// mapBattle := map[string]int{
-	// 	"5": 5,
-	// 	"6": 6,
-	// 	"7": 7,
-	// 	"8": 8,
-	// }
+		if numberGenerator, ok := mapBattle[strKey]; ok {
+			continue
+		} else {
+			mapBattle[strKey] = numberGenerator
+			countMap++
+		}
+
+		if countMap == 4 {
+			break
+		}
+		// чтобы числа шли подряд
+	}
 
 	for {
 		fmt.Println("\nВведите координату: ")
@@ -41,8 +45,8 @@ func main() {
 			continue
 		}
 
-		if val, ok := mapBattle[target]; ok {
-			count += 1
+		if _, ok := mapBattle[target]; ok {
+			count++
 
 			if count == 4 {
 				fmt.Println("\nВы выиграли!")
@@ -51,11 +55,12 @@ func main() {
 			}
 
 			for idx := range ship {
-				if val == idx+1 {
+				if target == strconv.Itoa(idx+1) {
 					ship[idx] = "X"
 				}
 				fmt.Print(ship[idx])
 			}
+			fmt.Println()
 		} else {
 			fmt.Println("Вы промахнулись")
 
@@ -65,6 +70,7 @@ func main() {
 				}
 				fmt.Print(ship[idx])
 			}
+			fmt.Println()
 		}
 
 		if count == 4 {
@@ -72,5 +78,3 @@ func main() {
 		}
 	}
 }
-
-// Генерация рандомных чисел в мапу + проверка
