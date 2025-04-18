@@ -7,6 +7,12 @@ import (
 	"time"
 )
 
+const (
+	winConst    = "X"
+	lossConst   = "."
+	changeConst = "@"
+)
+
 func plusNumber(number int, MB map[string]int) {
 	countMap := 1
 	strKey := strconv.Itoa(number)
@@ -38,7 +44,12 @@ func main() {
 	mapBattle := make(map[string]int)
 
 	deadCount := 0
-	ship := []string{"@", "@", "@", "@", "@", "@", "@", "@", "@", "@"}
+	countChangeConst := 10
+	ship := make([]string, countChangeConst)
+
+	for i := range ship {
+		ship[i] = changeConst
+	}
 
 	generator := rand.New(rand.NewSource(time.Now().UnixNano()))
 	numberGenerator := generator.Intn(11)
@@ -71,7 +82,7 @@ func main() {
 
 			for idx := range ship {
 				if target == strconv.Itoa(idx+1) {
-					ship[idx] = "X"
+					ship[idx] = winConst
 				}
 				fmt.Print(ship[idx])
 			}
@@ -81,7 +92,7 @@ func main() {
 
 			for idx := range ship {
 				if target == strconv.Itoa(idx+1) {
-					ship[idx] = "."
+					ship[idx] = lossConst
 				}
 				fmt.Print(ship[idx])
 			}
