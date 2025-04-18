@@ -37,11 +37,11 @@ func main() {
 	var target string
 	mapBattle := make(map[string]int)
 
-	count := 0
+	deadCount := 0
 	ship := []string{"@", "@", "@", "@", "@", "@", "@", "@", "@", "@"}
 
 	generator := rand.New(rand.NewSource(time.Now().UnixNano()))
-	numberGenerator := generator.Intn(10) + 1
+	numberGenerator := generator.Intn(11)
 
 	if numberGenerator >= 1 && numberGenerator <= 7 {
 		plusNumber(numberGenerator, mapBattle)
@@ -61,9 +61,9 @@ func main() {
 		}
 
 		if _, ok := mapBattle[target]; ok {
-			count++
+			deadCount++
 
-			if count == 4 {
+			if deadCount == 4 {
 				fmt.Println("\nВы выиграли!")
 			} else {
 				fmt.Println("Вы попали")
@@ -88,7 +88,7 @@ func main() {
 			fmt.Println()
 		}
 
-		if count == 4 {
+		if deadCount == 4 {
 			break
 		}
 	}
