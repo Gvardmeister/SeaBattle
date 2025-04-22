@@ -8,9 +8,9 @@ import (
 )
 
 const (
-	winConst    = "X"
-	lossConst   = "."
-	changeConst = "@"
+	ship   = "X"
+	loss   = "."
+	change = "@"
 )
 
 func plusNumber(number int, MB map[string]int) {
@@ -40,15 +40,14 @@ func minusNumber(number int, MB map[string]int) {
 }
 
 func main() {
+	deadCount := 0
+
 	var target string
 	mapBattle := make(map[string]int)
+	boar := make([]string, 10)
 
-	deadCount := 0
-	countChangeConst := 10
-	ship := make([]string, countChangeConst)
-
-	for i := range ship {
-		ship[i] = changeConst
+	for i := range boar {
+		boar[i] = change
 	}
 
 	generator := rand.New(rand.NewSource(time.Now().UnixNano()))
@@ -80,21 +79,21 @@ func main() {
 				fmt.Println("Вы попали")
 			}
 
-			for idx := range ship {
+			for idx := range boar {
 				if target == strconv.Itoa(idx+1) {
-					ship[idx] = winConst
+					boar[idx] = ship
 				}
-				fmt.Print(ship[idx])
+				fmt.Print(boar[idx])
 			}
 			fmt.Println()
 		} else {
 			fmt.Println("Вы промахнулись")
 
-			for idx := range ship {
+			for idx := range boar {
 				if target == strconv.Itoa(idx+1) {
-					ship[idx] = lossConst
+					boar[idx] = loss
 				}
-				fmt.Print(ship[idx])
+				fmt.Print(boar[idx])
 			}
 			fmt.Println()
 		}
