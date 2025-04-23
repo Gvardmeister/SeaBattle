@@ -23,25 +23,25 @@ func main() {
 		boar[i] = change
 	}
 
-	for {
-		generator := rand.New(rand.NewSource(time.Now().UnixNano()))
-		numberGenerator := generator.Intn(11)
+	generator := rand.New(rand.NewSource(time.Now().UnixNano()))
+	numberGenerator := generator.Intn(7)
 
+	for i := 0; i < 4; i++ {
+		ship[numberGenerator+i] = true
+	}
+
+	for {
 		fmt.Println("\nВведите координату: ")
 		fmt.Scan(&target)
 		fmt.Println()
 
-		if target == numberGenerator {
+		if ship[target-1] == true {
 			deadCount++
 
 			if deadCount == 4 {
-				fmt.Println("\nВы выиграли")
+				fmt.Println("Вы выиграли")
 			} else {
 				fmt.Println("Вы попали")
-			}
-
-			for i := range ship {
-				ship[i] = true
 			}
 
 			for i := range boar {
