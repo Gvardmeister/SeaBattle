@@ -6,6 +6,9 @@ import (
 	"time"
 )
 
+// реализовать квадратное поле
+// реализовать генерацию короблей
+
 const (
 	deck   = "X"
 	loss   = "."
@@ -17,10 +20,14 @@ func main() {
 
 	var target int
 	ship := make([]bool, 10)
+	boar := make([][]string, 10)
 
-	boar := make([]string, 10)
-	for i := range boar {
-		boar[i] = change
+	for i := 0; i < 10; i++ {
+		boar[i] = make([]string, 10)
+
+		for j := 0; j < 10; j++ {
+			boar[i][j] = change
+		}
 	}
 
 	generator := rand.New(rand.NewSource(time.Now().UnixNano()))
