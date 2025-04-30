@@ -59,11 +59,11 @@ func main() {
 	}
 
 	for deadCount < 4 {
-		fmt.Println("\nВведите координаты в формате X и Y:")
+		fmt.Println("\nВведите координаты в формате {X и Y} от 1 до 10:")
 		fmt.Scan(&coordinateX, &coordinateY)
 		fmt.Println()
 
-		if coordinateX < 1 && coordinateX > size || coordinateY < 1 && coordinateY > size {
+		if coordinateX < 1 || coordinateX > size || coordinateY < 1 || coordinateY > size {
 			fmt.Println("Неверные координаты")
 
 			continue
