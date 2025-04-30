@@ -44,16 +44,16 @@ func main() {
 
 	generator := rand.New(rand.NewSource(time.Now().UnixNano()))
 	shipX := generator.Intn(size - 4)
-	shipY := generator.Intn(size)
+	shipY := generator.Intn(size - 4)
 	positionShip := generator.Intn(2)
 
 	switch positionShip {
 	case 0:
-		for i := 0; i < size; i++ {
+		for i := 0; i < 4; i++ {
 			ship[shipX][shipY+i] = true
 		}
 	case 1:
-		for i := 0; i < size; i++ {
+		for i := 0; i < 4; i++ {
 			ship[shipX+i][shipY] = true
 		}
 	}
@@ -69,11 +69,8 @@ func main() {
 			continue
 		}
 
-		coordinateX--
-		coordinateY--
-
-		if ship[coordinateX][coordinateY] {
-			boar[coordinateX][coordinateY] = deck
+		if ship[coordinateX-1][coordinateY-1] {
+			boar[coordinateX-1][coordinateY-1] = deck
 			deadCount++
 
 			if deadCount == 4 {
@@ -85,7 +82,7 @@ func main() {
 		} else {
 			fmt.Println("Вы промахнулись")
 
-			boar[coordinateX][coordinateY] = loss
+			boar[coordinateX-1][coordinateY-1] = loss
 		}
 
 		printBoar(size, boar)
