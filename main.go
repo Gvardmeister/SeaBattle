@@ -6,43 +6,66 @@ import (
 	"time"
 )
 
-// реализовать квадратное поле
-// реализовать генерацию короблей
-
 const (
 	deck   = "X"
 	loss   = "."
 	change = "@"
 )
 
+func printBoar(size int, boar [][]string) {
+	for i := 0; i < size; i++ {
+		for j := 0; j < size; j++ {
+			fmt.Print(boar[i][j], " ")
+		}
+		fmt.Println()
+	}
+}
+
 func main() {
+	var coordinateX, coordinateY int
 	deadCount := 0
+	size := 10
 
-	var target int
-	ship := make([]bool, 10)
-	boar := make([][]string, 10)
+	boar := make([][]string, size)
+	for i := 0; i < size; i++ {
+		boar[i] = make([]string, size)
 
-	for i := 0; i < 10; i++ {
-		boar[i] = make([]string, 10)
-
-		for j := 0; j < 10; j++ {
+		for j := 0; j < size; j++ {
 			boar[i][j] = change
 		}
 	}
 
-	generator := rand.New(rand.NewSource(time.Now().UnixNano()))
-	numberGenerator := generator.Intn(7)
+	printBoar(size, boar)
 
-	for i := 0; i < 4; i++ {
-		ship[numberGenerator+i] = true
+	ship := make([][]bool, size)
+	for i := range ship {
+		ship[i] = make([]bool, size)
 	}
 
-	for {
-		fmt.Println("\nВведите координату: ")
-		fmt.Scan(&target)
+	generator := rand.New(rand.NewSource(time.Now().UnixNano()))
+	shipX := generator.Intn(size - 4)
+	shipY := generator.Intn(size)
+
+	for i := 0; i < 4; i++ {
+		ship[shipX+i][shipY] = true
+	}
+
+	for deadCount < 4 {
+		fmt.Println("\nВведите координаты в формате X и Y:")
+		fmt.Scan(&coordinateX, &coordinateY)
 		fmt.Println()
 
-		if ship[target-1] == true {
+		if coordinateX < 1 && coordinateX > size || coordinateY < 1 && coordinateY > size {
+			fmt.Println("Неверные координаты")
+
+			continue
+		}
+
+		coordinateX--
+		coordinateY--
+
+		if ship[coordinateX][coordinateY] {
+			boar[coordinateX][coordinateY] = deck
 			deadCount++
 
 			if deadCount == 4 {
@@ -51,27 +74,12 @@ func main() {
 				fmt.Println("Вы попали")
 			}
 
-			for i := range boar {
-				if target == i+1 {
-					boar[i] = deck
-				}
-				fmt.Print(boar[i])
-			}
-			fmt.Println()
 		} else {
 			fmt.Println("Вы промахнулись")
 
-			for i := range boar {
-				if target == i+1 {
-					boar[i] = loss
-				}
-				fmt.Print(boar[i])
-			}
-			fmt.Println()
+			boar[coordinateX][coordinateY] = loss
 		}
 
-		if deadCount == 4 {
-			break
-		}
+		printBoar(size, boar)
 	}
 }
