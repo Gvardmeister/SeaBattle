@@ -45,9 +45,17 @@ func main() {
 	generator := rand.New(rand.NewSource(time.Now().UnixNano()))
 	shipX := generator.Intn(size - 4)
 	shipY := generator.Intn(size)
+	positionShip := generator.Intn(2)
 
-	for i := 0; i < 4; i++ {
-		ship[shipX+i][shipY] = true
+	switch positionShip {
+	case 0:
+		for i := 0; i < size; i++ {
+			ship[shipX][shipY+i] = true
+		}
+	case 1:
+		for i := 0; i < size; i++ {
+			ship[shipX+i][shipY] = true
+		}
 	}
 
 	for deadCount < 4 {
