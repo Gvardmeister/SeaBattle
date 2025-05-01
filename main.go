@@ -35,8 +35,6 @@ func main() {
 		}
 	}
 
-	printBoar(size, boar)
-
 	ship := make([][]bool, size)
 	for i := range ship {
 		ship[i] = make([]bool, size)
@@ -69,16 +67,16 @@ func main() {
 			continue
 		}
 
-		if ship[coordinateX-1][coordinateY-1] {
+		if ship[coordinateX-1][coordinateY-1] == true && boar[coordinateX-1][coordinateY-1] != deck {
 			boar[coordinateX-1][coordinateY-1] = deck
 			deadCount++
 
-			if deadCount == 4 {
+			switch deadCount {
+			case 4:
 				fmt.Println("Вы выиграли")
-			} else {
+			default:
 				fmt.Println("Вы попали")
 			}
-
 		} else {
 			fmt.Println("Вы промахнулись")
 
