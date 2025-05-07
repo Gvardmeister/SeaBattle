@@ -24,20 +24,62 @@ func printBoar(size int, boar [][]string) {
 func generationShip(size int, ship [][]bool, sizeShip int) {
 	generator := rand.New(rand.NewSource(time.Now().UnixNano()))
 
-	shipX := generator.Intn(size - sizeShip)
-	shipY := generator.Intn(size - sizeShip)
-	positionShip := generator.Intn(2)
+	checkPlace := false
 
-	switchPositionShip(shipX, shipY, positionShip, sizeShip, ship)
+	for !checkPlace {
+		shipX := generator.Intn(size - sizeShip)
+		shipY := generator.Intn(size - sizeShip)
+		positionShip := generator.Intn(2)
+
+		if placeShip(shipX, shipY, positionShip, sizeShip, size, ship) {
+			printPositionShip(shipX, shipY, positionShip, sizeShip, ship)
+
+			checkPlace = true
+		}
+	}
 }
 
-func switchPositionShip(shipX, shipY, positionShip, sizeShip int, ship [][]bool) {
-	switch positionShip {
-	case 0:
+func placeShip(shipX, shipY, positionShip, sizeShip, size int, ship [][]bool) bool {
+	x := 0
+	y := 0
+
+	if positionShip == 0 {
+		y = 1
+	} else {
+		x = 1
+	}
+
+	for i := 0; i < sizeShip; i++ {
+		currentX := shipX + x*i
+		currentY := shipY + y*i
+
+		if currentX < 0 || currentY < 0 || currentX >= size || currentY >= size {
+			return false
+		}
+
+		for x2 := -1; x2 <= 1; x2++ {
+			for y2 := -1; y2 <= 1; y2++ {
+				x3 := currentX + x2
+				y3 := currentY + y2
+
+				if x3 >= 0 && y3 >= 0 && x3 < size && y3 < size {
+					if ship[x3][y3] {
+						return false
+					}
+				}
+			}
+		}
+	}
+
+	return true
+}
+
+func printPositionShip(shipX, shipY, positionShip, sizeShip int, ship [][]bool) {
+	if positionShip == 0 {
 		for i := 0; i < sizeShip; i++ {
 			ship[shipX][shipY+i] = true
 		}
-	case 1:
+	} else {
 		for i := 0; i < sizeShip; i++ {
 			ship[shipX+i][shipY] = true
 		}
@@ -45,16 +87,21 @@ func switchPositionShip(shipX, shipY, positionShip, sizeShip int, ship [][]bool)
 }
 
 func printShip(size int, ship [][]bool) {
-	generationShip(size, ship, 4)
-	generationShip(size, ship, 3)
-	// generationShip(size, ship, 3)
-	generationShip(size, ship, 2)
-	// generationShip(size, ship, 2)
-	// generationShip(size, ship, 2)
-	generationShip(size, ship, 1)
-	// generationShip(size, ship, 1)
-	// generationShip(size, ship, 1)
-	// generationShip(size, ship, 1)
+	variationShip := [][]int{
+		{4, 1},
+		{3, 2},
+		{2, 3},
+		{1, 4},
+	}
+
+	for _, value := range variationShip {
+		sizeShip := value[0]
+		count := value[1]
+
+		for i := 0; i < count; i++ {
+			generationShip(size, ship, sizeShip)
+		}
+	}
 }
 
 func main() {
