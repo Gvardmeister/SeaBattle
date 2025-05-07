@@ -21,6 +21,42 @@ func printBoar(size int, boar [][]string) {
 	}
 }
 
+func generationShip(size int, ship [][]bool, sizeShip int) {
+	generator := rand.New(rand.NewSource(time.Now().UnixNano()))
+
+	shipX := generator.Intn(size - sizeShip)
+	shipY := generator.Intn(size - sizeShip)
+	positionShip := generator.Intn(2)
+
+	switchPositionShip(shipX, shipY, positionShip, sizeShip, ship)
+}
+
+func switchPositionShip(shipX, shipY, positionShip, sizeShip int, ship [][]bool) {
+	switch positionShip {
+	case 0:
+		for i := 0; i < sizeShip; i++ {
+			ship[shipX][shipY+i] = true
+		}
+	case 1:
+		for i := 0; i < sizeShip; i++ {
+			ship[shipX+i][shipY] = true
+		}
+	}
+}
+
+func printShip(size int, ship [][]bool) {
+	generationShip(size, ship, 4)
+	generationShip(size, ship, 3)
+	// generationShip(size, ship, 3)
+	generationShip(size, ship, 2)
+	// generationShip(size, ship, 2)
+	// generationShip(size, ship, 2)
+	generationShip(size, ship, 1)
+	// generationShip(size, ship, 1)
+	// generationShip(size, ship, 1)
+	// generationShip(size, ship, 1)
+}
+
 func main() {
 	var coordinateX, coordinateY int
 	deadCount := 0
@@ -40,23 +76,8 @@ func main() {
 		ship[i] = make([]bool, size)
 	}
 
-	generator := rand.New(rand.NewSource(time.Now().UnixNano()))
-	shipX := generator.Intn(size - 4)
-	shipY := generator.Intn(size - 4)
-	positionShip := generator.Intn(2)
+	printShip(size, ship)
 
-	switch positionShip {
-	case 0:
-		for i := 0; i < 4; i++ {
-			ship[shipX][shipY+i] = true
-		}
-	case 1:
-		for i := 0; i < 4; i++ {
-			ship[shipX+i][shipY] = true
-		}
-	}
-
-	// поменять обратно на 4
 	// убрать потом 2 цикла
 	for deadCount < 20 {
 		for i := 0; i <= 10; i++ {
@@ -64,6 +85,7 @@ func main() {
 				coordinateX = i
 				coordinateY = j
 
+				// ниже все вытащить из цикла
 				fmt.Println()
 
 				if coordinateX < 1 || coordinateX > size || coordinateY < 1 || coordinateY > size {
