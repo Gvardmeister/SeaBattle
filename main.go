@@ -125,42 +125,37 @@ func main() {
 
 	printShip(size, ship)
 
-	// убрать потом 2 цикла
 	for deadCount < 20 {
-		for i := 0; i <= 10; i++ {
-			for j := 0; j <= 10; j++ {
-				coordinateX = i
-				coordinateY = j
+		fmt.Println("\nВведите координаты в формате {X и Y} от 1 до 10:")
+		fmt.Scan(&coordinateX, &coordinateY)
+		fmt.Println()
 
-				// ниже все вытащить из цикла
-				fmt.Println()
+		if coordinateX < 1 || coordinateX > size || coordinateY < 1 || coordinateY > size {
+			fmt.Println("Неверные координаты")
 
-				if coordinateX < 1 || coordinateX > size || coordinateY < 1 || coordinateY > size {
-					fmt.Println("Неверные координаты")
-
-					continue
-				}
-
-				if ship[coordinateX-1][coordinateY-1] == true && boar[coordinateX-1][coordinateY-1] != deck {
-					boar[coordinateX-1][coordinateY-1] = deck
-					deadCount++
-
-					switch deadCount {
-					case 4:
-						fmt.Println("Вы выиграли")
-					default:
-						fmt.Println("Вы попали")
-					}
-				} else {
-					fmt.Println("Вы промахнулись")
-
-					boar[coordinateX-1][coordinateY-1] = loss
-				}
-
-				printBoar(size, boar)
-			}
+			continue
 		}
+
+		if ship[coordinateX-1][coordinateY-1] == true && boar[coordinateX-1][coordinateY-1] != deck {
+			boar[coordinateX-1][coordinateY-1] = deck
+			deadCount++
+
+			switch deadCount {
+			case 20:
+				fmt.Println("Вы выиграли")
+			default:
+				fmt.Println("Вы попали")
+			}
+		} else if ship[coordinateX-1][coordinateY-1] == true && boar[coordinateX-1][coordinateY-1] == deck {
+			fmt.Println("Вы уже сюда попадали")
+
+			continue
+		} else {
+			fmt.Println("Вы промахнулись")
+
+			boar[coordinateX-1][coordinateY-1] = loss
+		}
+
+		printBoar(size, boar)
 	}
-	// fmt.Println("\nВведите координаты в формате {X и Y} от 1 до 10:")
-	// fmt.Scan(&coordinateX, &coordinateY)
 }
