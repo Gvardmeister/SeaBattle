@@ -56,33 +56,42 @@ func main() {
 		}
 	}
 
-	for deadCount < 4 {
-		fmt.Println("\nВведите координаты в формате {X и Y} от 1 до 10:")
-		fmt.Scan(&coordinateX, &coordinateY)
-		fmt.Println()
+	// поменять обратно на 4
+	// убрать потом 2 цикла
+	for deadCount < 20 {
+		for i := 0; i <= 10; i++ {
+			for j := 0; j <= 10; j++ {
+				coordinateX = i
+				coordinateY = j
 
-		if coordinateX < 1 || coordinateX > size || coordinateY < 1 || coordinateY > size {
-			fmt.Println("Неверные координаты")
+				fmt.Println()
 
-			continue
-		}
+				if coordinateX < 1 || coordinateX > size || coordinateY < 1 || coordinateY > size {
+					fmt.Println("Неверные координаты")
 
-		if ship[coordinateX-1][coordinateY-1] == true && boar[coordinateX-1][coordinateY-1] != deck {
-			boar[coordinateX-1][coordinateY-1] = deck
-			deadCount++
+					continue
+				}
 
-			switch deadCount {
-			case 4:
-				fmt.Println("Вы выиграли")
-			default:
-				fmt.Println("Вы попали")
+				if ship[coordinateX-1][coordinateY-1] == true && boar[coordinateX-1][coordinateY-1] != deck {
+					boar[coordinateX-1][coordinateY-1] = deck
+					deadCount++
+
+					switch deadCount {
+					case 4:
+						fmt.Println("Вы выиграли")
+					default:
+						fmt.Println("Вы попали")
+					}
+				} else {
+					fmt.Println("Вы промахнулись")
+
+					boar[coordinateX-1][coordinateY-1] = loss
+				}
+
+				printBoar(size, boar)
 			}
-		} else {
-			fmt.Println("Вы промахнулись")
-
-			boar[coordinateX-1][coordinateY-1] = loss
 		}
-
-		printBoar(size, boar)
 	}
+	// fmt.Println("\nВведите координаты в формате {X и Y} от 1 до 10:")
+	// fmt.Scan(&coordinateX, &coordinateY)
 }
