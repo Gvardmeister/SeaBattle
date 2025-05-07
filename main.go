@@ -140,10 +140,9 @@ func main() {
 			boar[coordinateX-1][coordinateY-1] = deck
 			deadCount++
 
-			switch deadCount {
-			case 20:
+			if deadCount == 20 {
 				fmt.Println("Вы выиграли")
-			default:
+			} else {
 				fmt.Println("Вы попали")
 			}
 		} else if ship[coordinateX-1][coordinateY-1] == true && boar[coordinateX-1][coordinateY-1] == deck {
