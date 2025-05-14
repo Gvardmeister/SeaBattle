@@ -136,8 +136,11 @@ func main() {
 			continue
 		}
 
-		if ship[coordinateX-1][coordinateY-1] == true && boar[coordinateX-1][coordinateY-1] != deck {
-			boar[coordinateX-1][coordinateY-1] = deck
+		coordinateX--
+		coordinateY--
+
+		if ship[coordinateX][coordinateY] == true && boar[coordinateX][coordinateY] != deck {
+			boar[coordinateX][coordinateY] = deck
 			deadCount++
 
 			if deadCount == 20 {
@@ -145,14 +148,14 @@ func main() {
 			} else {
 				fmt.Println("Вы попали")
 			}
-		} else if ship[coordinateX-1][coordinateY-1] == true && boar[coordinateX-1][coordinateY-1] == deck {
+		} else if boar[coordinateX][coordinateY] == deck {
 			fmt.Println("Вы уже сюда попадали")
 
 			continue
 		} else {
 			fmt.Println("Вы промахнулись")
 
-			boar[coordinateX-1][coordinateY-1] = loss
+			boar[coordinateX][coordinateY] = loss
 		}
 
 		printBoar(size, boar)
