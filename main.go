@@ -26,8 +26,13 @@ type board struct {
 }
 
 type ship struct {
-	cells [][2]int // можно было разбить на еще одну структуру, чтобы выделить только координаты
+	cells coordinate
 	hit   []bool
+}
+
+type coordinate struct {
+	x int
+	y int
 }
 
 func initGame() {
