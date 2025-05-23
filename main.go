@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
-	"time"
 )
 
 const (
@@ -12,152 +10,32 @@ const (
 	change = "@"
 )
 
-func printBoar(size int, boar [][]string) {
-	for i := 0; i < size; i++ {
-		for j := 0; j < size; j++ {
-			fmt.Print(boar[i][j], " ")
-		}
-		fmt.Println()
-	}
+type game struct {
+	player player
+	board  board
 }
 
-func generationShip(size int, ship [][]bool, sizeShip int) {
-	generator := rand.New(rand.NewSource(time.Now().UnixNano()))
-
-	checkPlace := false
-
-	for !checkPlace {
-		shipX := generator.Intn(size - sizeShip)
-		shipY := generator.Intn(size - sizeShip)
-		positionShip := generator.Intn(2)
-
-		if placeShip(shipX, shipY, positionShip, sizeShip, size, ship) {
-			printPositionShip(shipX, shipY, positionShip, sizeShip, ship)
-
-			checkPlace = true
-		}
-	}
+type player struct {
+	coordinateX int
+	coordinateY int
 }
 
-func placeShip(shipX, shipY, positionShip, sizeShip, size int, ship [][]bool) bool {
-	x := 0
-	y := 0
-
-	if positionShip == 0 {
-		y = 1
-	} else {
-		x = 1
-	}
-
-	for i := 0; i < sizeShip; i++ {
-		currentX := shipX + x*i
-		currentY := shipY + y*i
-
-		if currentX < 0 || currentY < 0 || currentX >= size || currentY >= size {
-			return false
-		}
-
-		for x2 := -1; x2 <= 1; x2++ {
-			for y2 := -1; y2 <= 1; y2++ {
-				x3 := currentX + x2
-				y3 := currentY + y2
-
-				if x3 >= 0 && y3 >= 0 && x3 < size && y3 < size {
-					if ship[x3][y3] {
-						return false
-					}
-				}
-			}
-		}
-	}
-
-	return true
+type board struct {
+	grid  [][]string
+	ships []ship
 }
 
-func printPositionShip(shipX, shipY, positionShip, sizeShip int, ship [][]bool) {
-	if positionShip == 0 {
-		for i := 0; i < sizeShip; i++ {
-			ship[shipX][shipY+i] = true
-		}
-	} else {
-		for i := 0; i < sizeShip; i++ {
-			ship[shipX+i][shipY] = true
-		}
-	}
+type ship struct {
+	cells [][2]int // можно было разбить на еще одну структуру, чтобы выделить только координаты
+	hit   []bool
 }
 
-func printShip(size int, ship [][]bool) {
-	variationShip := [][]int{
-		{4, 1},
-		{3, 2},
-		{2, 3},
-		{1, 4},
-	}
+func initGame() {
 
-	for _, value := range variationShip {
-		sizeShip := value[0]
-		count := value[1]
-
-		for i := 0; i < count; i++ {
-			generationShip(size, ship, sizeShip)
-		}
-	}
 }
 
 func main() {
-	var coordinateX, coordinateY int
-	deadCount := 0
-	size := 10
+	fmt.Println()
 
-	boar := make([][]string, size)
-	for i := 0; i < size; i++ {
-		boar[i] = make([]string, size)
-
-		for j := 0; j < size; j++ {
-			boar[i][j] = change
-		}
-	}
-
-	ship := make([][]bool, size)
-	for i := range ship {
-		ship[i] = make([]bool, size)
-	}
-
-	printShip(size, ship)
-
-	for deadCount < 20 {
-		fmt.Println("\nВведите координаты в формате {X и Y} от 1 до 10:")
-		fmt.Scan(&coordinateX, &coordinateY)
-		fmt.Println()
-
-		if coordinateX < 1 || coordinateX > size || coordinateY < 1 || coordinateY > size {
-			fmt.Println("Неверные координаты")
-
-			continue
-		}
-
-		coordinateX--
-		coordinateY--
-
-		if ship[coordinateX][coordinateY] == true && boar[coordinateX][coordinateY] != deck {
-			boar[coordinateX][coordinateY] = deck
-			deadCount++
-
-			if deadCount == 20 {
-				fmt.Println("Вы выиграли")
-			} else {
-				fmt.Println("Вы попали")
-			}
-		} else if boar[coordinateX][coordinateY] == deck {
-			fmt.Println("Вы уже сюда попадали")
-
-			continue
-		} else {
-			fmt.Println("Вы промахнулись")
-
-			boar[coordinateX][coordinateY] = loss
-		}
-
-		printBoar(size, boar)
-	}
+	initGame()
 }
