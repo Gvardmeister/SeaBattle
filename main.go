@@ -26,7 +26,7 @@ type board struct {
 }
 
 type ship struct {
-	cells coordinate
+	cells []coordinate
 	hit   []bool
 }
 
