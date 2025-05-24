@@ -115,6 +115,28 @@ func ValidCoordinateForMove(grid [][]string) coordinate {
 	}
 }
 
+// func (b *board) Render() {
+// 	fmt.Println("   1 2 3 4 5 6 7 8 9 10")
+
+// 	for y := 0; y < sizeBoard; y++ {
+// 		fmt.Printf("%2d ", y+1)
+// 		for x := 0; x < sizeBoard; x++ {
+// 			symbol := b.grid[y][x]
+
+// 			for _, ship := range b.ships {
+// 				for i, cell := range ship.cells {
+// 					if cell.xcoordinate == x && cell.ycoordinate == y && ship.hit[i] {
+// 						symbol = deck
+// 					}
+// 				}
+// 			}
+
+// 			fmt.Print(symbol, " ")
+// 		}
+// 		fmt.Println()
+// 	}
+// }
+
 func (b *board) Render() {
 	fmt.Println("   1 2 3 4 5 6 7 8 9 10")
 
