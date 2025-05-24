@@ -103,6 +103,18 @@ func (c *coordinate) PromptCoordinate() {
 	}
 }
 
+func (b *board) Render() {
+	fmt.Println("  1 2 3 4 5 6 7 8 9 10")
+
+	for i := 0; i < sizeBoard; i++ {
+		fmt.Printf("%2d ", i+1)
+		for j := 0; j < sizeBoard; j++ {
+			fmt.Print(b.grid[i][j], " ")
+		}
+		fmt.Println()
+	}
+}
+
 func initGame() {
 }
 
