@@ -17,8 +17,7 @@ type game struct {
 }
 
 type player struct {
-	coordinateX int
-	coordinateY int
+	position coordinate
 }
 
 type board struct {
@@ -63,7 +62,12 @@ func newBoard(sizeBoard int) *board {
 }
 
 func newPlayer() *player {
-	return &player{}
+	var coord coordinate
+	coord.PromptCoordinate()
+
+	return &player{
+		position: coord,
+	}
 }
 
 func newCoordinate(x, y int) coordinate {
@@ -80,12 +84,28 @@ func newShip(cells []coordinate) *ship {
 	}
 }
 
-func initGame() {
+func (c *coordinate) Get() (int, int) {
+	return c.xcoordinate, c.ycoordinate
+}
 
+func (c *coordinate) PromptCoordinate() {
+	for {
+		var x, y int
+		fmt.Println("Введите координаты X и Y {от 1 до 10}:")
+		fmt.Scan(&x, &y)
+
+		if x >= 1 && x <= sizeBoard && y >= 1 && y <= sizeBoard {
+			c.xcoordinate = x - 1
+			c.ycoordinate = y - 1
+			break
+		}
+		fmt.Println("Неверные координаты. Повторите ввод.")
+	}
+}
+
+func initGame() {
 }
 
 func main() {
-	fmt.Println()
-
 	initGame()
 }
