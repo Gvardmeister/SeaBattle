@@ -64,8 +64,7 @@ func newBoard(sizeBoard int) *board {
 }
 
 func newPlayer() *player {
-	var coord coordinate
-	coord.PromptCoordinate()
+	coord := ValidCoordinate()
 
 	return &player{
 		position: coord,
@@ -90,23 +89,34 @@ func (c *coordinate) Get() (int, int) {
 	return c.xcoordinate, c.ycoordinate
 }
 
-func (c *coordinate) PromptCoordinate() {
+func ValidCoordinate() coordinate {
 	for {
 		var x, y int
 		fmt.Println("Введите координаты X и Y {от 1 до 10}:")
 		fmt.Scan(&x, &y)
 
 		if x >= 1 && x <= sizeBoard && y >= 1 && y <= sizeBoard {
-			c.xcoordinate = x - 1
-			c.ycoordinate = y - 1
-			break
+			return newCoordinate(x-1, y-1)
 		}
 		fmt.Println("Неверные координаты. Повторите ввод.")
 	}
 }
 
+func ValidCoordinateForMove(grid [][]string) coordinate {
+	for {
+		coord := ValidCoordinate()
+		x, y := coord.xcoordinate, coord.ycoordinate
+
+		if grid[y][x] == change {
+			return coord
+		}
+
+		fmt.Println("Вы уже стреляли в эту клетку.")
+	}
+}
+
 func (b *board) Render() {
-	fmt.Println("  1 2 3 4 5 6 7 8 9 10")
+	fmt.Println("   1 2 3 4 5 6 7 8 9 10")
 
 	for i := 0; i < sizeBoard; i++ {
 		fmt.Printf("%2d ", i+1)
@@ -154,8 +164,12 @@ func (b *board) canPlaceShip(x, y, orientation, sizeShip int) bool {
 				cy := ny + dy2
 
 				if cx >= 0 && cy >= 0 && cx < sizeBoard && cy < sizeBoard {
-					if b.grid[cx][cy] == deck {
-						return false
+					for _, ship := range b.ships {
+						for _, c := range ship.cells {
+							if c.xcoordinate == cx && c.ycoordinate == cy {
+								return false
+							}
+						}
 					}
 				}
 			}
@@ -203,7 +217,34 @@ func (b *board) placeShip(x, y, orientation, sizeShip int) {
 }
 
 func (g *game) MakeMove() {
+	coord := ValidCoordinateForMove(g.board.grid)
+	x, y := coord.xcoordinate, coord.ycoordinate
+	hit := false
 
+	for i := range g.board.ships {
+		ship := &g.board.ships[i]
+
+		for j, cell := range ship.cells {
+			if cell.xcoordinate == x && cell.ycoordinate == y {
+				ship.hit[j] = true
+				g.board.grid[y][x] = deck
+				hit = true
+
+				fmt.Println("Попадание!")
+				break
+			}
+		}
+
+		if hit {
+			break
+		}
+	}
+
+	if !hit {
+		g.board.grid[y][x] = loss
+
+		fmt.Println("Вы промахнулись!")
+	}
 }
 
 func initGame() {
