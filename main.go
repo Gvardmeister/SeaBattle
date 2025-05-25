@@ -13,6 +13,10 @@ const (
 	sizeBoard = 10
 )
 
+// type Player interface {
+// 	GetMove(grid [][]string) coordinate
+// }
+
 type game struct {
 	player player
 	board  board
@@ -110,32 +114,9 @@ func ValidCoordinateForMove(grid [][]string) coordinate {
 		if grid[y][x] == change {
 			return coord
 		}
-
 		fmt.Println("Вы уже стреляли в эту клетку.")
 	}
 }
-
-// func (b *board) Render() {
-// 	fmt.Println("   1 2 3 4 5 6 7 8 9 10")
-
-// 	for y := 0; y < sizeBoard; y++ {
-// 		fmt.Printf("%2d ", y+1)
-// 		for x := 0; x < sizeBoard; x++ {
-// 			symbol := b.grid[y][x]
-
-// 			for _, ship := range b.ships {
-// 				for i, cell := range ship.cells {
-// 					if cell.xcoordinate == x && cell.ycoordinate == y && ship.hit[i] {
-// 						symbol = deck
-// 					}
-// 				}
-// 			}
-
-// 			fmt.Print(symbol, " ")
-// 		}
-// 		fmt.Println()
-// 	}
-// }
 
 func (b *board) Render() {
 	fmt.Println("   1 2 3 4 5 6 7 8 9 10")
@@ -238,8 +219,7 @@ func (b *board) placeShip(x, y, orientation, sizeShip int) {
 	b.ships = append(b.ships, *newShip(cells))
 }
 
-func (g *game) MakeMove() {
-	coord := ValidCoordinateForMove(g.board.grid)
+func (g *game) MakeMove(coord coordinate) {
 	x, y := coord.xcoordinate, coord.ycoordinate
 	hit := false
 
@@ -249,10 +229,8 @@ func (g *game) MakeMove() {
 		for j, cell := range ship.cells {
 			if cell.xcoordinate == x && cell.ycoordinate == y {
 				ship.hit[j] = true
-				g.board.grid[y][x] = deck
 				hit = true
 
-				fmt.Println("Попадание!")
 				break
 			}
 		}
@@ -262,11 +240,18 @@ func (g *game) MakeMove() {
 		}
 	}
 
-	if !hit {
+	if hit {
+		g.board.grid[y][x] = deck
+
+		fmt.Println("Попадание!")
+	} else {
 		g.board.grid[y][x] = loss
 
 		fmt.Println("Вы промахнулись!")
 	}
+
+	fmt.Println()
+	g.board.Render()
 }
 
 func initGame() {
@@ -275,7 +260,8 @@ func initGame() {
 
 	for {
 		g.board.Render()
-		g.MakeMove()
+		coord := ValidCoordinateForMove(g.board.grid)
+		g.MakeMove(coord)
 	}
 }
 
