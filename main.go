@@ -202,6 +202,17 @@ func (b *board) placeShip(x, y, orientation, sizeShip int) {
 	b.ships = append(b.ships, *newShip(cells))
 }
 
+func (b *board) AllShipsKill() bool {
+	for _, ship := range b.ships {
+		for _, partHit := range ship.hit {
+			if !partHit {
+				return false
+			}
+		}
+	}
+	return true
+}
+
 func (g *game) MakeMove(coord coordinate) {
 	x, y := coord.xcoordinate, coord.ycoordinate
 	hit := false
@@ -224,11 +235,11 @@ func (g *game) MakeMove(coord coordinate) {
 	}
 
 	if hit {
-		g.board.grid[x][y] = deck
+		g.board.grid[y][x] = deck
 
 		fmt.Println("\nПопадание!")
 	} else {
-		g.board.grid[x][y] = loss
+		g.board.grid[y][x] = loss
 
 		fmt.Println("\nВы промахнулись!")
 	}
@@ -244,6 +255,11 @@ func (g *game) initGame() {
 	for {
 		coord := g.player.GetMove(g.board.grid)
 		g.MakeMove(coord)
+
+		if g.board.AllShipsKill() {
+			fmt.Println("\nВсе корабли уничтожены!")
+			break
+		}
 	}
 }
 
