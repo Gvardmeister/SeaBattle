@@ -90,7 +90,7 @@ func (hp *HumanPlayer) GetMove(grid [][]string) coordinate {
 		x--
 		y--
 
-		if grid[y][x] == change {
+		if grid[x][y] == change { // переставил местами для удобства пользователя
 			return newCoordinate(x, y)
 		}
 		fmt.Println("\nВы уже стреляли в эту клетку.")
@@ -235,11 +235,11 @@ func (g *game) MakeMove(coord coordinate) {
 	}
 
 	if hit {
-		g.board.grid[y][x] = deck
+		g.board.grid[x][y] = deck // переставил местами для удобства пользователя
 
 		fmt.Println("\nПопадание!")
 	} else {
-		g.board.grid[y][x] = loss
+		g.board.grid[x][y] = loss // переставил местами для удобства пользователя
 
 		fmt.Println("\nВы промахнулись!")
 	}
