@@ -13,18 +13,16 @@ const (
 	sizeBoard = 10
 )
 
-// type Player interface {
-// 	GetMove(grid [][]string) coordinate
-// }
+type Player interface {
+	GetMove(grid [][]string) coordinate
+}
 
 type game struct {
-	player player
+	player Player
 	board  board
 }
 
-type player struct {
-	position coordinate
-}
+type HumanPlayer struct{}
 
 type board struct {
 	grid  [][]string
@@ -42,12 +40,9 @@ type coordinate struct {
 }
 
 func newGame() *game {
-	board := newBoard(sizeBoard)
-	player := newPlayer()
-
 	return &game{
-		player: *player,
-		board:  *board,
+		player: &HumanPlayer{},
+		board:  *newBoard(sizeBoard),
 	}
 }
 
@@ -67,14 +62,6 @@ func newBoard(sizeBoard int) *board {
 	}
 }
 
-func newPlayer() *player {
-	coord := ValidCoordinate()
-
-	return &player{
-		position: coord,
-	}
-}
-
 func newCoordinate(x, y int) coordinate {
 	return coordinate{
 		xcoordinate: x,
@@ -89,33 +76,29 @@ func newShip(cells []coordinate) *ship {
 	}
 }
 
-func (c *coordinate) Get() (int, int) {
-	return c.xcoordinate, c.ycoordinate
-}
-
-func ValidCoordinate() coordinate {
+func (hp *HumanPlayer) GetMove(grid [][]string) coordinate {
 	for {
 		var x, y int
-		fmt.Println("Введите координаты X и Y {от 1 до 10}:")
+		fmt.Println("\nВведите координаты X и Y {от 1 до 10}:")
 		fmt.Scan(&x, &y)
 
-		if x >= 1 && x <= sizeBoard && y >= 1 && y <= sizeBoard {
-			return newCoordinate(x-1, y-1)
+		if x < 1 || x > sizeBoard || y < 1 || y > sizeBoard {
+			fmt.Println("\nНеверные координаты. Повторите ввод.")
+			continue
 		}
-		fmt.Println("Неверные координаты. Повторите ввод.")
+
+		x--
+		y--
+
+		if grid[y][x] == change {
+			return newCoordinate(x, y)
+		}
+		fmt.Println("\nВы уже стреляли в эту клетку.")
 	}
 }
 
-func ValidCoordinateForMove(grid [][]string) coordinate {
-	for {
-		coord := ValidCoordinate()
-		x, y := coord.xcoordinate, coord.ycoordinate
-
-		if grid[y][x] == change {
-			return coord
-		}
-		fmt.Println("Вы уже стреляли в эту клетку.")
-	}
+func (c *coordinate) Get() (int, int) {
+	return c.xcoordinate, c.ycoordinate
 }
 
 func (b *board) Render() {
@@ -241,30 +224,29 @@ func (g *game) MakeMove(coord coordinate) {
 	}
 
 	if hit {
-		g.board.grid[y][x] = deck
+		g.board.grid[x][y] = deck
 
-		fmt.Println("Попадание!")
+		fmt.Println("\nПопадание!")
 	} else {
-		g.board.grid[y][x] = loss
+		g.board.grid[x][y] = loss
 
-		fmt.Println("Вы промахнулись!")
+		fmt.Println("\nВы промахнулись!")
 	}
 
 	fmt.Println()
 	g.board.Render()
 }
 
-func initGame() {
-	g := newGame()
+func (g *game) initGame() {
 	g.board.PlaceShips()
+	g.board.Render()
 
 	for {
-		g.board.Render()
-		coord := ValidCoordinateForMove(g.board.grid)
+		coord := g.player.GetMove(g.board.grid)
 		g.MakeMove(coord)
 	}
 }
 
 func main() {
-	initGame()
+	newGame().initGame()
 }
