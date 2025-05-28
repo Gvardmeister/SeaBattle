@@ -10,10 +10,12 @@ import (
 )
 
 const (
-	Deck      = "X"
-	Loss      = "."
-	Change    = "@"
-	SizeBoard = 10
+	Deck       = "X"
+	Loss       = "."
+	Change     = "@"
+	SizeBoard  = 10
+	horizontal = 0
+	vertical   = 1
 )
 
 type Board struct {
@@ -66,9 +68,10 @@ func (b *Board) generateShip(sizeShip int) {
 
 func (b *Board) canPlaceShip(x, y, orientation, sizeShip int) bool {
 	dx, dy := 0, 0
-	if orientation == 0 {
+
+	if orientation == horizontal {
 		dy = 1
-	} else {
+	} else if orientation == vertical {
 		dx = 1
 	}
 
@@ -121,9 +124,10 @@ func (b *Board) PlaceShips() {
 
 func (b *Board) placeShip(x, y, orientation, sizeShip int) {
 	dx, dy := 0, 0
-	if orientation == 0 {
+
+	if orientation == horizontal {
 		dy = 1
-	} else {
+	} else if orientation == vertical {
 		dx = 1
 	}
 
