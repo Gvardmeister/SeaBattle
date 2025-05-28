@@ -79,29 +79,39 @@ func (b *Board) canPlaceShip(x, y, orientation, sizeShip int) bool {
 		nx := x + dx*i
 		ny := y + dy*i
 
-		if nx < 0 || ny < 0 || nx >= SizeBoard || ny >= SizeBoard {
+		if !isWithinBounds(nx, ny) {
 			return false
 		}
 
-		for dx2 := -1; dx2 <= 1; dx2++ {
-			for dy2 := -1; dy2 <= 1; dy2++ {
-				cx := nx + dx2
-				cy := ny + dy2
+		if b.hasNeighboringShips(nx, ny) {
+			return false
+		}
+	}
+	return true
+}
 
-				if cx >= 0 && cy >= 0 && cx < SizeBoard && cy < SizeBoard {
-					for _, ship := range b.Ships {
-						for _, c := range ship.Cells {
-							if c.GetX() == cx && c.GetY() == cy {
-								return false
-							}
-						}
+func isWithinBounds(x, y int) bool { return x < 0 || y < 0 || x >= SizeBoard || y >= SizeBoard }
+
+func (b *Board) hasNeighboringShips(x, y int) bool {
+	for dx := -1; dx <= 1; dx++ {
+		for dy := -1; dy <= 1; dy++ {
+			cx := x + dx
+			cy := y + dy
+
+			if !isWithinBounds(cx, cy) {
+				continue
+			}
+
+			for _, ship := range b.Ships {
+				for _, c := range ship.Cells {
+					if c.GetX() == cx && c.GetY() == cy {
+						return true
 					}
 				}
 			}
 		}
 	}
-
-	return true
+	return false
 }
 
 func (b *Board) PlaceShips() {
