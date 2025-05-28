@@ -60,7 +60,7 @@ func (g *game) InitGame() {
 	g.board.Render()
 
 	for {
-		coord := g.player.GetMove(g.board.Grid)
+		coord := g.player.GetMove(&g.board)
 		g.MakeMove(coord)
 
 		if g.board.AllShipsKill() {

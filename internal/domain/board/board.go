@@ -87,6 +87,7 @@ func (b *Board) canPlaceShip(x, y, orientation, sizeShip int) bool {
 			return false
 		}
 	}
+
 	return true
 }
 
@@ -111,6 +112,7 @@ func (b *Board) hasNeighboringShips(x, y int) bool {
 			}
 		}
 	}
+
 	return false
 }
 
@@ -160,5 +162,10 @@ func (b *Board) AllShipsKill() bool {
 			}
 		}
 	}
+
 	return true
+}
+
+func (b *Board) IsAlreadyShot(x, y int) bool {
+	return b.Grid[x][y] != Change
 }

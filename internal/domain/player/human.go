@@ -9,7 +9,7 @@ import (
 
 type HumanPlayer struct{}
 
-func (hp *HumanPlayer) GetMove(grid [][]string) coordinate.Coordinate {
+func (hp *HumanPlayer) GetMove(b *board.Board) coordinate.Coordinate {
 	for {
 		var x, y int
 		fmt.Println("\nВведите координаты X и Y {от 1 до 10}:")
@@ -23,9 +23,10 @@ func (hp *HumanPlayer) GetMove(grid [][]string) coordinate.Coordinate {
 		x--
 		y--
 
-		if grid[x][y] == board.Change { // переставил местами для удобства пользователя
+		if !b.IsAlreadyShot(x, y) { // переставил местами для удобства пользователя
 			return coordinate.NewCoordinate(x, y)
 		}
+
 		fmt.Println("\nВы уже стреляли в эту клетку.")
 	}
 }
