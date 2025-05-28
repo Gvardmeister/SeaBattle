@@ -79,7 +79,7 @@ func (b *Board) canPlaceShip(x, y, orientation, sizeShip int) bool {
 		nx := x + dx*i
 		ny := y + dy*i
 
-		if !isWithinBounds(nx, ny) {
+		if isWithinBounds(nx, ny) {
 			return false
 		}
 
