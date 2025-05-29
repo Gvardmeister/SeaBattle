@@ -63,6 +63,12 @@ func (g *game) Start() {
 		coord := g.player.GetMove(&g.board)
 		g.MakeMove(coord)
 
+		stop := g.player.StopGame()
+		if stop == true {
+			fmt.Println("\nПользователь покинул игру!")
+			break
+		}
+
 		if g.board.AllShipsKill() {
 			fmt.Println("\nВсе корабли уничтожены!")
 			break

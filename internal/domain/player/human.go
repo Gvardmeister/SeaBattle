@@ -30,3 +30,15 @@ func (hp *HumanPlayer) GetMove(b *board.Board) coordinate.Coordinate {
 		fmt.Println("\nВы уже стреляли в эту клетку.")
 	}
 }
+
+func (hp *HumanPlayer) StopGame() bool {
+	var quit string
+	fmt.Println("\nХочешь выйти из игры? (y/n):")
+	fmt.Scan(&quit)
+
+	if quit == "y" {
+		return true
+	}
+
+	return false
+}
