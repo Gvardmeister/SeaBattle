@@ -55,7 +55,7 @@ func (g *game) MakeMove(coord coordinate.Coordinate) {
 	g.board.Render()
 }
 
-func (g *game) InitGame() {
+func (g *game) Start() {
 	g.board.PlaceShips()
 	g.board.Render()
 
