@@ -1,7 +1,9 @@
 package game
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 
 	"github.com/Gvardmeister/seabattle/internal/domain/board"
 	"github.com/Gvardmeister/seabattle/internal/domain/coordinate"
@@ -17,14 +19,18 @@ type game struct {
 
 func NewGame() *game {
 	fmt.Println("Игра морской бой!")
-	fmt.Println("Чтобы сдаться/продолжить игру введите - y/n")
+
+	reader := bufio.NewReader(os.Stdin)
 
 	var name1, name2 string
 
 	fmt.Print("Введите имя первого игрока: ")
 	fmt.Scan(&name1)
+	reader.ReadString('\n')
+
 	fmt.Print("Введите имя второго игрока: ")
 	fmt.Scan(&name2)
+	reader.ReadString('\n')
 
 	return &game{
 		player1: player.NewHumanPlayer(name1),
@@ -73,12 +79,13 @@ func (g *game) turn(p player.Player, enemyBoard *board.Board) bool {
 	fmt.Printf("\nХод игрока: %s\n", p.GetName())
 	enemyBoard.Render()
 
-	if p.StopGame() {
-		fmt.Printf("\n%s, завершил игру!", p.GetName())
+	coord, wantsExit := p.GetMove(enemyBoard)
+
+	if wantsExit {
+		fmt.Printf("\nИгрок %s сдался. Игра окончена!\n", p.GetName())
 		return true
 	}
 
-	coord := p.GetMove(enemyBoard)
 	g.MakeMove(coord, enemyBoard)
 
 	return false

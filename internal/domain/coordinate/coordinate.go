@@ -13,5 +13,4 @@ func NewCoordinate(x, y int) Coordinate {
 }
 
 func (c *Coordinate) GetX() int { return c.xcoordinate }
-
 func (c *Coordinate) GetY() int { return c.ycoordinate }

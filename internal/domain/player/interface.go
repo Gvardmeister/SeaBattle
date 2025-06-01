@@ -6,7 +6,6 @@ import (
 )
 
 type Player interface {
-	GetMove(b *board.Board) coordinate.Coordinate
-	StopGame() bool
+	GetMove(b *board.Board) (coordinate.Coordinate, bool)
 	GetName() string
 }
