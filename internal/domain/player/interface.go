@@ -8,4 +8,5 @@ import (
 type Player interface {
 	GetMove(b *board.Board) coordinate.Coordinate
 	StopGame() bool
+	GetName() string
 }

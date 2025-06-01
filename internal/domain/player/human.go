@@ -7,7 +7,15 @@ import (
 	"github.com/Gvardmeister/seabattle/internal/domain/coordinate"
 )
 
-type HumanPlayer struct{}
+type HumanPlayer struct {
+	name string
+}
+
+func NewHumanPlayer(name string) *HumanPlayer {
+	return &HumanPlayer{
+		name: name,
+	}
+}
 
 func (hp *HumanPlayer) GetMove(b *board.Board) coordinate.Coordinate {
 	for {
@@ -31,14 +39,14 @@ func (hp *HumanPlayer) GetMove(b *board.Board) coordinate.Coordinate {
 	}
 }
 
+func (hp *HumanPlayer) GetName() string {
+	return hp.name
+}
+
 func (hp *HumanPlayer) StopGame() bool {
 	var quit string
-	fmt.Println("\nХочешь выйти из игры? (y/n):")
+	// fmt.Println("\nХочешь выйти из игры? (y/n):")
 	fmt.Scan(&quit)
 
-	if quit == "y" {
-		return true
-	}
-
-	return false
+	return quit == "y"
 }
