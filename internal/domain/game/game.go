@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/Gvardmeister/seabattle/internal/domain/board"
 	"github.com/Gvardmeister/seabattle/internal/domain/coordinate"
@@ -21,16 +22,8 @@ func NewGame() *game {
 	fmt.Println("Игра морской бой!")
 
 	reader := bufio.NewReader(os.Stdin)
-
-	var name1, name2 string
-
-	fmt.Print("Введите имя первого игрока: ")
-	fmt.Scan(&name1)
-	reader.ReadString('\n')
-
-	fmt.Print("Введите имя второго игрока: ")
-	fmt.Scan(&name2)
-	reader.ReadString('\n')
+	name1 := getPlayerName(reader, "Введите имя первого игрока: ")
+	name2 := getPlayerName(reader, "Введите имя второго игрока: ")
 
 	return &game{
 		player1: player.NewHumanPlayer(name1),
@@ -38,6 +31,12 @@ func NewGame() *game {
 		player2: player.NewHumanPlayer(name2),
 		board2:  *board.NewBoard(board.SizeBoard),
 	}
+}
+
+func getPlayerName(reader *bufio.Reader, name string) string {
+	fmt.Print(name)
+	input, _ := reader.ReadString('\n')
+	return strings.TrimSpace(input)
 }
 
 func (g *game) MakeMove(coord coordinate.Coordinate, enemyBoard *board.Board) {
@@ -87,7 +86,6 @@ func (g *game) turn(p player.Player, enemyBoard *board.Board) bool {
 	}
 
 	g.MakeMove(coord, enemyBoard)
-
 	return false
 }
 
