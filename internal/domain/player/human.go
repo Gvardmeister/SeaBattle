@@ -23,7 +23,7 @@ func (hp *HumanPlayer) GetMove(b *board.Board) (coordinate.Coordinate, bool) {
 	reader := bufio.NewReader(os.Stdin)
 
 	for {
-		fmt.Println("\nВведите координаты (X и Y - от 1 до 10) или 'y' для выхода:")
+		fmt.Println("\nВведите координаты. Формат: {1 1} или 'y' для выхода:")
 		input, _ := reader.ReadString('\n')
 		input = strings.TrimSpace(input)
 

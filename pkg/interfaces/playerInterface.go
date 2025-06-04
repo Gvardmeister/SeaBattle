@@ -1,4 +1,4 @@
-package player
+package interfaces
 
 import (
 	"github.com/Gvardmeister/seabattle/internal/domain/board"

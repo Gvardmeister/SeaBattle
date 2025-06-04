@@ -8,29 +8,48 @@ import (
 
 	"github.com/Gvardmeister/seabattle/internal/domain/board"
 	"github.com/Gvardmeister/seabattle/internal/domain/coordinate"
+	"github.com/Gvardmeister/seabattle/internal/domain/generator"
 	"github.com/Gvardmeister/seabattle/internal/domain/player"
+	"github.com/Gvardmeister/seabattle/pkg/interfaces"
 )
 
 type game struct {
-	player1 player.Player
+	player1 interfaces.Player
 	board1  board.Board
-	player2 player.Player
+	player2 interfaces.Player
 	board2  board.Board
 }
 
 func NewGame() *game {
 	fmt.Println("Игра морской бой!")
-
 	reader := bufio.NewReader(os.Stdin)
+	fmt.Println("Выберите режим: PvP - 1 или PvE - 2")
+
+	modeInput, _ := reader.ReadString('\n')
+	modeInput = strings.TrimSpace(modeInput)
+
+	var player1, player2 interfaces.Player
+
 	name1 := getPlayerName(reader, "Введите имя первого игрока: ")
-	name2 := getPlayerName(reader, "Введите имя второго игрока: ")
+	player1 = player.NewHumanPlayer(name1)
+
+	if modeInput == "1" {
+		name2 := getPlayerName(reader, "Введите имя второго игрока: ")
+		player2 = player.NewHumanPlayer(name2)
+	} else {
+		player2 = player.NewBotPlayer("Bot", getDefaultGenerator())
+	}
 
 	return &game{
-		player1: player.NewHumanPlayer(name1),
+		player1: player1,
 		board1:  *board.NewBoard(board.SizeBoard),
-		player2: player.NewHumanPlayer(name2),
+		player2: player2,
 		board2:  *board.NewBoard(board.SizeBoard),
 	}
+}
+
+func getDefaultGenerator() interfaces.CoordinateGenerator {
+	return generator.NewRandomGenerator()
 }
 
 func getPlayerName(reader *bufio.Reader, name string) string {
@@ -74,7 +93,7 @@ func (g *game) MakeMove(coord coordinate.Coordinate, enemyBoard *board.Board) {
 	enemyBoard.Render()
 }
 
-func (g *game) turn(p player.Player, enemyBoard *board.Board) bool {
+func (g *game) turn(p interfaces.Player, enemyBoard *board.Board) bool {
 	fmt.Printf("\nХод игрока: %s\n", p.GetName())
 	enemyBoard.Render()
 
