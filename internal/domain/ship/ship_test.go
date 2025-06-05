@@ -20,6 +20,7 @@ func TestNewShip(t *testing.T) {
 	if len(cells) != len(ship.Cells) {
 		t.Errorf("Ожидалась длина Cells = %d, получено %d", len(cells), len(ship.Cells))
 	}
+
 	if len(cells) != len(ship.Hit) {
 		t.Errorf("Ожидалась длина Hit = %d, получено %d", len(cells), len(ship.Hit))
 	}
