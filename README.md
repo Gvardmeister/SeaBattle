@@ -21,7 +21,7 @@
 2. Склонируйте репозиторий:
 
 ```bash
-    git clone https://github.com/your-username/seabattle.git
+    git clone https://github.com/Gvardmeister/SeaBattle.git
     cd seabattle
 ```
 
@@ -45,9 +45,3 @@
 - Поддержка интерфейса игрока
 - Простая CLI-интерфейсная логика
 - Возможность расширения под ИИ/сетевую игру
-
-## Планы
-
-- [ ] Игра против ИИ
-- [ ] Сетевая игра (P2P)
-- [ ] Тестирование основных компонентов

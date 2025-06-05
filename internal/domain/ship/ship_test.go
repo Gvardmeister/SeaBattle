@@ -1,6 +1,9 @@
 package ship
 
-import "testing"
+import (
+	"testing"
+	//"github.com/Gvardmeister/seabattle/internal/domain/coordinate"
+)
 
 func TestNewShip(t *testing.T) {
 
