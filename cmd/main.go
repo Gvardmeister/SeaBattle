@@ -2,8 +2,10 @@ package main
 
 import (
 	"github.com/Gvardmeister/seabattle/internal/domain/game"
+	"github.com/Gvardmeister/seabattle/internal/services"
 )
 
 func main() {
-	game.NewGame().Start()
+	inputReader := services.NewStdInputReader()
+	game.NewGame(inputReader).Start()
 }

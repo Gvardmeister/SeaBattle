@@ -1,9 +1,7 @@
 package game
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 	"strings"
 
 	"github.com/Gvardmeister/seabattle/internal/domain/board"
@@ -20,22 +18,25 @@ type game struct {
 	board2  board.Board
 }
 
-func NewGame() *game {
+func NewGame(input interfaces.InputReader) *game {
 	fmt.Println("Игра морской бой!")
-	reader := bufio.NewReader(os.Stdin)
 	fmt.Println("Выберите режим: PvP - 1 или PvE - 2")
 
-	modeInput, _ := reader.ReadString('\n')
+	modeInput, err := input.ReadLine()
+	if err != nil {
+		fmt.Println("Ошибка чтения. Выбран режим по умолчанию: PvE")
+		modeInput = "2"
+	}
 	modeInput = strings.TrimSpace(modeInput)
 
 	var player1, player2 interfaces.Player
 
-	name1 := getPlayerName(reader, "Введите имя первого игрока: ")
-	player1 = player.NewHumanPlayer(name1)
+	name1 := getPlayerName(input, "Введите имя первого игрока: ")
+	player1 = player.NewHumanPlayer(name1, input)
 
 	if modeInput == "1" {
-		name2 := getPlayerName(reader, "Введите имя второго игрока: ")
-		player2 = player.NewHumanPlayer(name2)
+		name2 := getPlayerName(input, "Введите имя второго игрока: ")
+		player2 = player.NewHumanPlayer(name2, input)
 	} else {
 		player2 = player.NewBotPlayer("Bot", getDefaultGenerator())
 	}
@@ -52,9 +53,12 @@ func getDefaultGenerator() interfaces.CoordinateGenerator {
 	return generator.NewRandomGenerator()
 }
 
-func getPlayerName(reader *bufio.Reader, name string) string {
+func getPlayerName(reader interfaces.InputReader, name string) string {
 	fmt.Print(name)
-	input, _ := reader.ReadString('\n')
+	input, err := reader.ReadLine()
+	if err != nil {
+		fmt.Println("Ошибка чтения. Используется имя по умолчанию")
+	}
 	return strings.TrimSpace(input)
 }
 

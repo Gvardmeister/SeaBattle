@@ -1,31 +1,32 @@
 package player
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
 
 	"github.com/Gvardmeister/seabattle/internal/domain/board"
 	"github.com/Gvardmeister/seabattle/internal/domain/coordinate"
+	"github.com/Gvardmeister/seabattle/pkg/interfaces"
 )
 
 type HumanPlayer struct {
-	name string
+	name   string
+	reader interfaces.InputReader
 }
 
-func NewHumanPlayer(name string) *HumanPlayer {
-	return &HumanPlayer{name: name}
+func NewHumanPlayer(name string, reader interfaces.InputReader) *HumanPlayer {
+	return &HumanPlayer{name: name, reader: reader}
 }
 
 func (hp *HumanPlayer) GetMove(b *board.Board) (coordinate.Coordinate, bool) {
-	reader := bufio.NewReader(os.Stdin)
-
 	for {
 		fmt.Println("\nВведите координаты. Формат: {1 1} или 'y' для выхода:")
-		input, _ := reader.ReadString('\n')
-		input = strings.TrimSpace(input)
+
+		input, err := hp.reader.ReadLine()
+		if err != nil {
+			fmt.Println("\nОшибка ввода. Попробуйте снова.")
+		}
 
 		if strings.ToLower(input) == "y" {
 			return coordinate.NewCoordinate(-1, -1), true
