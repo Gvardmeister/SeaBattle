@@ -5,16 +5,16 @@ import (
 
 	"github.com/Gvardmeister/seabattle/internal/domain/board"
 	"github.com/Gvardmeister/seabattle/internal/domain/coordinate"
-	mocks "github.com/Gvardmeister/seabattle/internal/test/mocks/mockcoordinategenerator"
+	"github.com/Gvardmeister/seabattle/internal/test/mocks/mockcoordinategenerator"
 )
 
 func TestNewBotPlayer(t *testing.T) {
-	mockGen := &mocks.MockCoordinateGenerator{
+	mockGen := &mockcoordinategenerator.MockCoordinateGenerator{
 		FixedCoord: coordinate.NewCoordinate(2, 9),
 	}
 
 	bot := NewBotPlayer("Bot", mockGen)
-	board := &board.Board{}
+	board := board.NewBoard(board.SizeBoard)
 
 	coord, _ := bot.GetMove(board)
 

@@ -1,4 +1,4 @@
-package mocks
+package mockcoordinategenerator
 
 import (
 	"github.com/Gvardmeister/seabattle/internal/domain/board"
