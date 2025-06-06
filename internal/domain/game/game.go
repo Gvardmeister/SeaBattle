@@ -6,10 +6,10 @@ import (
 
 	"github.com/Gvardmeister/seabattle/internal/domain/board"
 	"github.com/Gvardmeister/seabattle/internal/domain/coordinate"
-	"github.com/Gvardmeister/seabattle/internal/domain/generator"
 	"github.com/Gvardmeister/seabattle/internal/domain/player/bot"
 	"github.com/Gvardmeister/seabattle/internal/domain/player/human"
 	"github.com/Gvardmeister/seabattle/internal/interfaces"
+	"github.com/Gvardmeister/seabattle/internal/services/stdgenerator"
 )
 
 type game struct {
@@ -51,7 +51,7 @@ func NewGame(input interfaces.InputReader) *game {
 }
 
 func getDefaultGenerator() interfaces.CoordinateGenerator {
-	return generator.NewRandomGenerator()
+	return stdgenerator.NewRandomGenerator()
 }
 
 func getPlayerName(reader interfaces.InputReader, name string) string {
