@@ -5,7 +5,7 @@ import (
 
 	"github.com/Gvardmeister/seabattle/internal/domain/board"
 	"github.com/Gvardmeister/seabattle/internal/domain/coordinate"
-	"github.com/Gvardmeister/seabattle/pkg/interfaces"
+	"github.com/Gvardmeister/seabattle/internal/interfaces"
 )
 
 type BotPlayer struct {

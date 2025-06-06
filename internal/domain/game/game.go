@@ -8,7 +8,7 @@ import (
 	"github.com/Gvardmeister/seabattle/internal/domain/coordinate"
 	"github.com/Gvardmeister/seabattle/internal/domain/generator"
 	"github.com/Gvardmeister/seabattle/internal/domain/player"
-	"github.com/Gvardmeister/seabattle/pkg/interfaces"
+	"github.com/Gvardmeister/seabattle/internal/interfaces"
 )
 
 type game struct {
