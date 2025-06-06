@@ -7,7 +7,8 @@ import (
 	"github.com/Gvardmeister/seabattle/internal/domain/board"
 	"github.com/Gvardmeister/seabattle/internal/domain/coordinate"
 	"github.com/Gvardmeister/seabattle/internal/domain/generator"
-	"github.com/Gvardmeister/seabattle/internal/domain/player"
+	"github.com/Gvardmeister/seabattle/internal/domain/player/bot"
+	"github.com/Gvardmeister/seabattle/internal/domain/player/human"
 	"github.com/Gvardmeister/seabattle/internal/interfaces"
 )
 
@@ -32,13 +33,13 @@ func NewGame(input interfaces.InputReader) *game {
 	var player1, player2 interfaces.Player
 
 	name1 := getPlayerName(input, "Введите имя первого игрока: ")
-	player1 = player.NewHumanPlayer(name1, input)
+	player1 = human.NewHumanPlayer(name1, input)
 
 	if modeInput == "1" {
 		name2 := getPlayerName(input, "Введите имя второго игрока: ")
-		player2 = player.NewHumanPlayer(name2, input)
+		player2 = human.NewHumanPlayer(name2, input)
 	} else {
-		player2 = player.NewBotPlayer("Bot", getDefaultGenerator())
+		player2 = bot.NewBotPlayer("Bot", getDefaultGenerator())
 	}
 
 	return &game{
