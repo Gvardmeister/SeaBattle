@@ -5,7 +5,7 @@ import (
 
 	"github.com/Gvardmeister/seabattle/internal/domain/board"
 	"github.com/Gvardmeister/seabattle/internal/domain/coordinate"
-	"github.com/Gvardmeister/seabattle/internal/test/mocks"
+	mocks "github.com/Gvardmeister/seabattle/internal/test/mocks/mockcoordinategenerator"
 )
 
 func TestNewBotPlayer(t *testing.T) {
