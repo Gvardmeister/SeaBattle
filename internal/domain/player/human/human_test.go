@@ -205,6 +205,7 @@ func TestGetMoveOutOfBoundsNegative(t *testing.T) {
 func TestGetMoveInvalidNumberPair(t *testing.T) {
 	inputs := []string{"3", "4 abc", "3 4"}
 	mockReader := mockinputreader.NewMockInput(inputs)
+
 	player := NewHumanPlayer("Alex", mockReader)
 	board := board.NewBoard(board.SizeBoard)
 
@@ -214,5 +215,22 @@ func TestGetMoveInvalidNumberPair(t *testing.T) {
 	}
 	if coord.GetX() != 2 || coord.GetY() != 3 {
 		t.Errorf("Ожидались координаты (2, 3), получены (%d,%d)", coord.GetX(), coord.GetY())
+	}
+}
+
+func TestGetMoveInputErrorPartial(t *testing.T) {
+	reader := mockinputreader.NewPartialErrorInputReader()
+
+	player := NewHumanPlayer("Alex", reader)
+	b := board.NewBoard(board.SizeBoard)
+
+	coord, exit := player.GetMove(b)
+
+	if exit {
+		t.Errorf("Ожидалось exit == false, получено true")
+	}
+
+	if coord.GetX() != 2 || coord.GetY() != 3 {
+		t.Errorf("Ожидались координаты (2, 3), получены (%d, %d)", coord.GetX(), coord.GetY())
 	}
 }
