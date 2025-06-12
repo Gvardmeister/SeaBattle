@@ -79,7 +79,7 @@ func (b *Board) canPlaceShip(x, y, orientation, sizeShip int) bool {
 		nx := x + dx*i
 		ny := y + dy*i
 
-		if IsWithinBounds(nx, ny) {
+		if IsOutOfBounds(nx, ny) {
 			return false
 		}
 
@@ -91,7 +91,7 @@ func (b *Board) canPlaceShip(x, y, orientation, sizeShip int) bool {
 	return true
 }
 
-func IsWithinBounds(x, y int) bool { return x < 0 || y < 0 || x >= SizeBoard || y >= SizeBoard }
+func IsOutOfBounds(x, y int) bool { return x < 0 || y < 0 || x >= SizeBoard || y >= SizeBoard }
 
 func (b *Board) hasNeighboringShips(x, y int) bool {
 	for dx := -1; dx <= 1; dx++ {
@@ -99,7 +99,7 @@ func (b *Board) hasNeighboringShips(x, y int) bool {
 			cx := x + dx
 			cy := y + dy
 
-			if !IsWithinBounds(cx, cy) {
+			if !IsOutOfBounds(cx, cy) {
 				continue
 			}
 
