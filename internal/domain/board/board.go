@@ -14,8 +14,8 @@ const (
 	Loss       = "."
 	Change     = "@"
 	SizeBoard  = 10
-	horizontal = 0
-	vertical   = 1
+	Horizontal = 0
+	Vertical   = 1
 )
 
 type Board struct {
@@ -59,19 +59,19 @@ func (b *Board) generateShip(sizeShip int) {
 		shipY := generator.Intn(SizeBoard)
 		positionShip := generator.Intn(2)
 
-		if b.canPlaceShip(shipX, shipY, positionShip, sizeShip) {
+		if b.сanPlaceShip(shipX, shipY, positionShip, sizeShip) {
 			b.placeShip(shipX, shipY, positionShip, sizeShip)
 			break
 		}
 	}
 }
 
-func (b *Board) canPlaceShip(x, y, orientation, sizeShip int) bool {
+func (b *Board) сanPlaceShip(x, y, orientation, sizeShip int) bool {
 	dx, dy := 0, 0
 
-	if orientation == horizontal {
+	if orientation == Horizontal {
 		dy = 1
-	} else if orientation == vertical {
+	} else if orientation == Vertical {
 		dx = 1
 	}
 
@@ -137,9 +137,9 @@ func (b *Board) PlaceShips() {
 func (b *Board) placeShip(x, y, orientation, sizeShip int) {
 	dx, dy := 0, 0
 
-	if orientation == horizontal {
+	if orientation == Horizontal {
 		dy = 1
-	} else if orientation == vertical {
+	} else if orientation == Vertical {
 		dx = 1
 	}
 
