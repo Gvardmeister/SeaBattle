@@ -59,14 +59,14 @@ func (b *Board) generateShip(sizeShip int) {
 		shipY := generator.Intn(SizeBoard)
 		positionShip := generator.Intn(2)
 
-		if b.сanPlaceShip(shipX, shipY, positionShip, sizeShip) {
+		if b.canPlaceShip(shipX, shipY, positionShip, sizeShip) {
 			b.placeShip(shipX, shipY, positionShip, sizeShip)
 			break
 		}
 	}
 }
 
-func (b *Board) сanPlaceShip(x, y, orientation, sizeShip int) bool {
+func (b *Board) canPlaceShip(x, y, orientation, sizeShip int) bool {
 	dx, dy := 0, 0
 
 	if orientation == Horizontal {
