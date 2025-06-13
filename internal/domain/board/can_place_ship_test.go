@@ -24,7 +24,7 @@ func TestCanPlaceShip_ValidVerticalPlacement(t *testing.T) {
 	orientation := Vertical
 
 	if !b.canPlaceShip(x, y, orientation, size) {
-		t.Errorf("Ожидалось размещение корабля в (%d, %d), получено", x, y)
+		t.Errorf("Ожидалось размещение корабля вертикально в (%d, %d), но функция вернула false", x, y)
 	}
 }
 
