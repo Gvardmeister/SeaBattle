@@ -1,6 +1,9 @@
 package board_test
 
 import (
+	"bytes"
+	"io"
+	"os"
 	"testing"
 
 	"github.com/Gvardmeister/seabattle/internal/domain/board"
@@ -66,4 +69,40 @@ func abs(x int) int {
 		return -x
 	}
 	return x
+}
+
+func TestRender(t *testing.T) {
+	b := board.NewBoard(board.SizeBoard)
+
+	origStdout := os.Stdout
+	r, w, _ := os.Pipe()
+	os.Stdout = w
+
+	b.Render()
+
+	w.Close()
+	os.Stdout = origStdout
+
+	var buf bytes.Buffer
+	io.Copy(&buf, r)
+	r.Close()
+
+	got := buf.String()
+
+	expected := `   1 2 3 4 5 6 7 8 9 10
+ 1 @ @ @ @ @ @ @ @ @ @ 
+ 2 @ @ @ @ @ @ @ @ @ @ 
+ 3 @ @ @ @ @ @ @ @ @ @ 
+ 4 @ @ @ @ @ @ @ @ @ @ 
+ 5 @ @ @ @ @ @ @ @ @ @ 
+ 6 @ @ @ @ @ @ @ @ @ @ 
+ 7 @ @ @ @ @ @ @ @ @ @ 
+ 8 @ @ @ @ @ @ @ @ @ @ 
+ 9 @ @ @ @ @ @ @ @ @ @ 
+10 @ @ @ @ @ @ @ @ @ @ 
+`
+
+	if got != expected {
+		t.Errorf("Render() output mismatch\nGot:\n%s\nExpected:\n%s", got, expected)
+	}
 }
