@@ -19,8 +19,8 @@
   - mocks/mockcoordinategenerator/ — моки для тестирования координат
   - mocks/mockinputreader/ — моки для тестирования ввода
 - internal/interfaces — интефейсы
-- pkg/ — сторонник пакеты и утилиты
-- cover — конфигурационный файл, покрытие тестов
+- pkg/utilities/board_utils_test — сторонние пакеты и утилиты
+- cover — конфигурационный файл, покрытие и анализ тестов
 - go.mod — модуль версии программы
 - README.md — документация проекта
 
