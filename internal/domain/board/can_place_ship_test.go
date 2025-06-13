@@ -35,8 +35,8 @@ func TestCanPlaceShip_ValidRangeX(t *testing.T) {
 	size := 4
 	orientation := Vertical
 
-	if !b.canPlaceShip(x, y, size, orientation) {
-		t.Errorf("Ожидалось, что нельзя будет поставить корабль за границей, но получено true")
+	if b.canPlaceShip(x, y, orientation, size) {
+		t.Errorf("Ожидалось, что нельзя будет поставить корабль за границей по оси Х")
 	}
 }
 
@@ -45,10 +45,10 @@ func TestCanPlaceShip_ValidRangeY(t *testing.T) {
 
 	x, y := 0, 8
 	size := 4
-	orientation := Vertical
+	orientation := Horizontal
 
-	if !b.canPlaceShip(x, y, size, orientation) {
-		t.Errorf("Ожидалось, что нельзя будет поставить корабль за границей, но получено true")
+	if b.canPlaceShip(x, y, orientation, size) {
+		t.Errorf("Ожидалось, что нельзя будет поставить корабль за границей по оси Y")
 	}
 }
 
@@ -57,8 +57,8 @@ func TestCanPlaceShip_Merge(t *testing.T) {
 
 	b.placeShip(0, 0, Horizontal, 4)
 
-	if !b.canPlaceShip(0, 0, Vertical, 4) {
-		t.Errorf("Ожидалось, что корабль не соприкасается с другими")
+	if b.canPlaceShip(0, 0, Vertical, 4) {
+		t.Errorf("Ожидалось, что корабль нельзя ставить в эту позицию, т.к. он соприкасается с другим кораблём")
 	}
 }
 
@@ -67,7 +67,7 @@ func TestCanPlaceShip_TouchingSide(t *testing.T) {
 
 	b.placeShip(0, 0, Horizontal, 4)
 
-	if !b.canPlaceShip(1, 1, Horizontal, 2) {
+	if b.canPlaceShip(1, 1, Horizontal, 2) {
 		t.Errorf("Ожидалось, что корабль не может быть размещён вплотную к другому")
 	}
 }
@@ -77,7 +77,7 @@ func TestCanPlaceShip_TouchingDiagonal(t *testing.T) {
 
 	b.placeShip(1, 1, Horizontal, 3)
 
-	if !b.canPlaceShip(0, 0, Horizontal, 2) {
+	if b.canPlaceShip(0, 0, Horizontal, 2) {
 		t.Errorf("Ожидалось, что корабль не может быть размещён по диагонали к другому")
 	}
 }

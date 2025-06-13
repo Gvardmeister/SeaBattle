@@ -99,7 +99,7 @@ func (b *Board) hasNeighboringShips(x, y int) bool {
 			cx := x + dx
 			cy := y + dy
 
-			if !IsOutOfBounds(cx, cy) {
+			if IsOutOfBounds(cx, cy) {
 				continue
 			}
 
