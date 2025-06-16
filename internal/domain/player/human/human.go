@@ -19,7 +19,7 @@ func NewHumanPlayer(name string, reader interfaces.InputReader) *HumanPlayer {
 	return &HumanPlayer{name: name, reader: reader}
 }
 
-func (hp *HumanPlayer) GetMove(b *board.Board) (coordinate.Coordinate, bool) {
+func (hp *HumanPlayer) GetMove(b interfaces.Board) (coordinate.Coordinate, bool) {
 	for {
 		fmt.Println("\nВведите координаты. Формат: {1 1} или 'y' для выхода:")
 

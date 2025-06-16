@@ -1,8 +1,8 @@
 package mockcoordinategenerator
 
 import (
-	"github.com/Gvardmeister/seabattle/internal/domain/board"
 	"github.com/Gvardmeister/seabattle/internal/domain/coordinate"
+	"github.com/Gvardmeister/seabattle/internal/interfaces"
 )
 
 type MockCoordinateGenerator struct {
@@ -10,7 +10,7 @@ type MockCoordinateGenerator struct {
 	Called     bool
 }
 
-func (m *MockCoordinateGenerator) Generator(b *board.Board) coordinate.Coordinate {
+func (m *MockCoordinateGenerator) Generator(b interfaces.Board) coordinate.Coordinate {
 	m.Called = true
 	return m.FixedCoord
 }

@@ -154,6 +154,39 @@ func (b *Board) placeShip(x, y, orientation, sizeShip int) {
 	b.Ships = append(b.Ships, *ship.NewShip(cells))
 }
 
+func (b *Board) ReceiveShot(coord coordinate.Coordinate) bool {
+	x, y := coord.GetX(), coord.GetY()
+
+	if b.IsAlreadyShot(x, y) {
+		return false
+	}
+
+	hit := false
+
+	for i := range b.Ships {
+		ship := &b.Ships[i]
+
+		for j, cell := range ship.Cells {
+			if cell.GetX() == x && cell.GetY() == y {
+				ship.Hit[j] = true
+				hit = true
+				break
+			}
+		}
+		if hit {
+			break
+		}
+	}
+
+	if hit {
+		b.Grid[x][y] = Deck
+	} else {
+		b.Grid[x][y] = Loss
+	}
+
+	return hit
+}
+
 func (b *Board) AllShipsKill() bool {
 	for _, ship := range b.Ships {
 		for _, partHit := range ship.Hit {

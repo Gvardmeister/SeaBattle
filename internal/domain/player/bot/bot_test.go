@@ -3,8 +3,8 @@ package bot
 import (
 	"testing"
 
-	"github.com/Gvardmeister/seabattle/internal/domain/board"
 	"github.com/Gvardmeister/seabattle/internal/domain/coordinate"
+	"github.com/Gvardmeister/seabattle/internal/test/mocks/mockboard"
 	"github.com/Gvardmeister/seabattle/internal/test/mocks/mockcoordinategenerator"
 )
 
@@ -13,10 +13,13 @@ func TestNewBotPlayer(t *testing.T) {
 		FixedCoord: coordinate.NewCoordinate(2, 9),
 	}
 
-	bot := NewBotPlayer("Bot", mockGen)
-	board := board.NewBoard(board.SizeBoard)
+	mockBoard := &mockboard.MockBoard{
+		IsAlreadyShotFunc: func(x, y int) bool { return false },
+	}
 
-	coord, _ := bot.GetMove(board)
+	bot := NewBotPlayer("Bot", mockGen)
+
+	coord, _ := bot.GetMove(mockBoard)
 
 	if coord.GetX() != 2 || coord.GetY() != 9 {
 		t.Errorf("Ожидались координаты (2, 9), получено (%d, %d)", coord.GetX(), coord.GetY())

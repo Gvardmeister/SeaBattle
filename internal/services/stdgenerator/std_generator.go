@@ -6,6 +6,7 @@ import (
 
 	"github.com/Gvardmeister/seabattle/internal/domain/board"
 	"github.com/Gvardmeister/seabattle/internal/domain/coordinate"
+	"github.com/Gvardmeister/seabattle/internal/interfaces"
 )
 
 type RandomGenerator struct {
@@ -19,7 +20,7 @@ func NewRandomGenerator() *RandomGenerator {
 	}
 }
 
-func (rg *RandomGenerator) Generator(b *board.Board) coordinate.Coordinate {
+func (rg *RandomGenerator) Generator(b interfaces.Board) coordinate.Coordinate {
 	for {
 		x := rg.rng.Intn(board.SizeBoard)
 		y := rg.rng.Intn(board.SizeBoard)

@@ -14,9 +14,9 @@ import (
 
 type game struct {
 	player1 interfaces.Player
-	board1  board.Board
+	board1  interfaces.Board
 	player2 interfaces.Player
-	board2  board.Board
+	board2  interfaces.Board
 }
 
 func NewGame(input interfaces.InputReader) *game {
@@ -44,9 +44,9 @@ func NewGame(input interfaces.InputReader) *game {
 
 	return &game{
 		player1: player1,
-		board1:  *board.NewBoard(board.SizeBoard),
+		board1:  board.NewBoard(board.SizeBoard),
 		player2: player2,
-		board2:  *board.NewBoard(board.SizeBoard),
+		board2:  board.NewBoard(board.SizeBoard),
 	}
 }
 
@@ -76,34 +76,12 @@ func getPlayerName(reader interfaces.InputReader, name string) string {
 	return strings.TrimSpace(input)
 }
 
-func (g *game) MakeMove(coord coordinate.Coordinate, enemyBoard *board.Board) {
-	x, y := coord.GetX(), coord.GetY()
-	hit := false
-
-	for i := range enemyBoard.Ships {
-		ship := &enemyBoard.Ships[i]
-
-		for j, cell := range ship.Cells {
-			if cell.GetX() == x && cell.GetY() == y {
-				ship.Hit[j] = true
-				hit = true
-
-				break
-			}
-		}
-
-		if hit {
-			break
-		}
-	}
+func (g *game) MakeMove(coord coordinate.Coordinate, enemyBoard interfaces.Board) {
+	hit := enemyBoard.ReceiveShot(coord)
 
 	if hit {
-		enemyBoard.Grid[x][y] = board.Deck // переставил местами для удобства пользователя
-
 		fmt.Println("\nПопадание!")
 	} else {
-		enemyBoard.Grid[x][y] = board.Loss // переставил местами для удобства пользователя
-
 		fmt.Println("\nВы промахнулись!")
 	}
 
@@ -111,7 +89,7 @@ func (g *game) MakeMove(coord coordinate.Coordinate, enemyBoard *board.Board) {
 	enemyBoard.Render()
 }
 
-func (g *game) turn(p interfaces.Player, enemyBoard *board.Board) bool {
+func (g *game) turn(p interfaces.Player, enemyBoard interfaces.Board) bool {
 	fmt.Printf("\nХод игрока: %s\n", p.GetName())
 	enemyBoard.Render()
 
@@ -131,7 +109,7 @@ func (g *game) Start() {
 	g.board2.PlaceShips()
 
 	for {
-		if g.turn(g.player1, &g.board2) {
+		if g.turn(g.player1, g.board2) {
 			break
 		}
 
@@ -140,7 +118,7 @@ func (g *game) Start() {
 			break
 		}
 
-		if g.turn(g.player2, &g.board1) {
+		if g.turn(g.player2, g.board1) {
 			break
 		}
 

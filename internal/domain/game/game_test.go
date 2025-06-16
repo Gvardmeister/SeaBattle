@@ -83,7 +83,6 @@ func TestNewGame_PvPMode_EmptyNames(t *testing.T) {
 }
 
 func TestNewGame_PvEMode_EmptyName(t *testing.T) {
-	// Эмулируем ввод: "2" - режим PvE, затем пустая строка - имя игрока
 	input := mockinputreader.NewMockInput([]string{"2", ""})
 	g := game.NewGame(input)
 
