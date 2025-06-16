@@ -50,6 +50,14 @@ func NewGame(input interfaces.InputReader) *game {
 	}
 }
 
+func (g *game) GetPlayer1() interfaces.Player {
+	return g.player1
+}
+
+func (g *game) GetPlayer2() interfaces.Player {
+	return g.player2
+}
+
 func getDefaultGenerator() interfaces.CoordinateGenerator {
 	return stdgenerator.NewRandomGenerator()
 }
