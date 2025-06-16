@@ -65,8 +65,13 @@ func getDefaultGenerator() interfaces.CoordinateGenerator {
 func getPlayerName(reader interfaces.InputReader, name string) string {
 	fmt.Print(name)
 	input, err := reader.ReadLine()
-	if err != nil {
+	if err != nil || strings.TrimSpace(input) == "" {
 		fmt.Println("Ошибка чтения. Используется имя по умолчанию")
+
+		if strings.Contains(name, "второго") {
+			return "Player2"
+		}
+		return "Player1"
 	}
 	return strings.TrimSpace(input)
 }
