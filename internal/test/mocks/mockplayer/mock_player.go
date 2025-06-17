@@ -7,6 +7,7 @@ import (
 
 type MockPlayer struct {
 	Name        string
+	Moved       bool
 	GetNameFunc func() string
 	GetMoveFunc func(b interfaces.Board) (coordinate.Coordinate, bool)
 	TurnFunc    func(b interfaces.Board) bool
@@ -20,6 +21,7 @@ func (m *MockPlayer) GetName() string {
 }
 
 func (m *MockPlayer) GetMove(b interfaces.Board) (coordinate.Coordinate, bool) {
+	m.Moved = true
 	if m.GetMoveFunc != nil {
 		return m.GetMoveFunc(b)
 	}

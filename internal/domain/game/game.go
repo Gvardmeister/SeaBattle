@@ -109,21 +109,21 @@ func (g *game) Start() {
 	g.board2.PlaceShips()
 
 	for {
-		if g.turn(g.player1, g.board2) {
-			break
-		}
-
 		if g.board2.AllShipsKill() {
 			fmt.Printf("\nПобедил игрок - %s", g.player1.GetName())
 			break
 		}
 
-		if g.turn(g.player2, g.board1) {
+		if g.board1.AllShipsKill() {
+			fmt.Printf("\nПобедил игрок - %s", g.player2.GetName())
 			break
 		}
 
-		if g.board1.AllShipsKill() {
-			fmt.Printf("\nПобедил игрок - %s", g.player2.GetName())
+		if g.turn(g.player1, g.board2) {
+			break
+		}
+
+		if g.turn(g.player2, g.board1) {
 			break
 		}
 	}
