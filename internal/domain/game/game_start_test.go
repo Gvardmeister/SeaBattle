@@ -195,3 +195,70 @@ func TestStart_EndsWhenTurnReturnsTrue(t *testing.T) {
 		t.Errorf("turnFunc должен быть вызван один раз, но был %d", turnCalls)
 	}
 }
+
+func TestStart_MultipleTurnsBoardDestroyed(t *testing.T) {
+	callCount := 0
+
+	board2 := &mockboard.MockBoard{
+		AllShipsKillFunc: func() bool {
+			callCount++
+			return callCount >= 3
+		},
+	}
+	board1 := &mockboard.MockBoard{
+		AllShipsKillFunc: func() bool {
+			return false
+		},
+	}
+
+	player1 := &mockplayer.MockPlayer{
+		Name: "Player1",
+		GetMoveFunc: func(b interfaces.Board) (coordinate.Coordinate, bool) {
+			return coordinate.NewCoordinate(1, 1), false
+		},
+	}
+	player2 := &mockplayer.MockPlayer{
+		Name: "Player2",
+		GetMoveFunc: func(b interfaces.Board) (coordinate.Coordinate, bool) {
+			return coordinate.NewCoordinate(2, 2), false
+		},
+	}
+
+	turns := 0
+
+	g := &testGameStr{
+		game: game{
+			player1: player1,
+			board1:  board1,
+			player2: player2,
+			board2:  board2,
+		},
+		turnFunc: func(p interfaces.Player, b interfaces.Board) bool {
+			turns++
+			return false
+		},
+	}
+
+	for {
+		if g.turnFunc(g.player1, g.board2) {
+			break
+		}
+		if g.board2.AllShipsKill() {
+			break
+		}
+
+		if g.turnFunc(g.player2, g.board1) {
+			break
+		}
+		if g.board1.AllShipsKill() {
+			break
+		}
+	}
+
+	if turns < 3 {
+		t.Errorf("Ожидалось минимум 3 хода, но было: %d", turns)
+	}
+	if callCount < 3 {
+		t.Errorf("Ожидалось минимум 3 вызова AllShipsKill, но было: %d", callCount)
+	}
+}

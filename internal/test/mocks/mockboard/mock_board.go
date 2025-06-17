@@ -8,6 +8,7 @@ type MockBoard struct {
 	PlaceShipsCalled  bool
 	AllShipsKillFunc  func() bool
 	IsAlreadyShotFunc func(x, y int) bool
+	ReceiveShotFunc   func(c coordinate.Coordinate) bool
 }
 
 func (m *MockBoard) PlaceShips() {
@@ -31,5 +32,8 @@ func (m *MockBoard) IsAlreadyShot(x, y int) bool {
 func (m *MockBoard) Render() {}
 
 func (m *MockBoard) ReceiveShot(c coordinate.Coordinate) bool {
+	if m.ReceiveShotFunc != nil {
+		return m.ReceiveShotFunc(c)
+	}
 	return false
 }
