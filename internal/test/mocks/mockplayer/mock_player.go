@@ -9,6 +9,7 @@ type MockPlayer struct {
 	Name        string
 	GetNameFunc func() string
 	GetMoveFunc func(b interfaces.Board) (coordinate.Coordinate, bool)
+	TurnFunc    func(b interfaces.Board) bool
 }
 
 func (m *MockPlayer) GetName() string {

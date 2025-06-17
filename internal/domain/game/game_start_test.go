@@ -262,3 +262,37 @@ func TestStart_MultipleTurnsBoardDestroyed(t *testing.T) {
 		t.Errorf("Ожидалось минимум 3 вызова AllShipsKill, но было: %d", callCount)
 	}
 }
+
+func TestGame_Start_TurnBreaksImmediately(t *testing.T) {
+	player1Moves := 0
+
+	player1 := &mockplayer.MockPlayer{
+		Name: "Игрок 1",
+		GetMoveFunc: func(b interfaces.Board) (coordinate.Coordinate, bool) {
+			player1Moves++
+			return coordinate.NewCoordinate(0, 0), true
+		},
+	}
+
+	player2 := &mockplayer.MockPlayer{
+		Name: "Игрок 2",
+		GetMoveFunc: func(b interfaces.Board) (coordinate.Coordinate, bool) {
+			return coordinate.NewCoordinate(0, 0), true
+		},
+	}
+
+	board2 := &mockboard.MockBoard{
+		AllShipsKillFunc: func() bool {
+			return true
+		},
+	}
+
+	g := &game{
+		board1:  &mockboard.MockBoard{},
+		board2:  board2,
+		player1: player1,
+		player2: player2,
+	}
+
+	g.Start()
+}
